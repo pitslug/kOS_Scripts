@@ -6,7 +6,7 @@ SET shipName TO SHIP:NAME.
 
 // Launch Status - Set to 1 when guidance complete
 SET launchStatus TO 0.
-SET status TO "PRE-LAUNCH".
+SET status TO "".
 
 // Set initial TWR variables
 SET current TO "current".
@@ -19,4 +19,4 @@ LOCK progradePitch TO navPitch(SRFPROGRADE:VECTOR).
 SET towerHeight TO shipHeight() + ALT:RADAR.
 
 //Timer Function
-SET mTimer TO 0.
+SET mTime TO 0.
