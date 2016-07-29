@@ -26,6 +26,7 @@ FUNCTION TWRCalc {
   PARAMETER twr.
   LOCAL currentThrust is 0.
   LOCAL maximumThrust is 0.
+  LOCAL availableThrust is 0.
 
   // Determine local Gravity
   LOCK g TO EARTH:MU / (ALTITUDE + EARTH:RADIUS)^2.
