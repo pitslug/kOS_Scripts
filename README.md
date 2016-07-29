@@ -12,6 +12,7 @@ Todo List:
 - Main menu
 - Fix display
 - Finalise trajectory code
+- Add launch window lookup
 - Abort Sequences
 - Staging
 - Additional programs
