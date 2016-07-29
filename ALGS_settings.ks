@@ -4,7 +4,7 @@
 // This may need to be ship specific
 
 //Countdown Settings
-GLOBAL cdTimer IS 15.  //not used yet
+GLOBAL cdTimer IS 15.  //Must be factor of 5.
 GLOBAL cdIgnite IS 3.15.
 
 // Set initial launch parameters

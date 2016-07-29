@@ -6,17 +6,13 @@ RUN ONCE ALGS_func.
 RUN ONCE ALGS_vars.
 RUN ONCE ALGS_settings.
 
-SET launchStatus TO 0.
+RUN ALGS_display.
 
-UNTIL launchStatus = 1 {
-
-	RUN ALGS_display.
-	RUN ONCE ALGS_launch.
-
-}
+RUN ONCE ALGS_launch.
 
 WAIT 1.
 
 addMessage(mTime, "Launch Program Complete").
 updateStatus("Program Complete").
+SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 WAIT 30.

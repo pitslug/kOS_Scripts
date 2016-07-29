@@ -1,14 +1,19 @@
 // ALGS Variable Declarations
 // Set up variables for use in launch script
 
-// Set Vessel name for display
+// Set mode variables for Launch. Set to 0 when complete
+SET count_mode TO 1.
+SET lift_mode TO 2.
+SET turn_mode TO 3.
+SET circ_mode TO 4.
+SET complete TO 0.
+
+// Set Variables for display
 SET shipName TO SHIP:NAME.
+SET vesselStatus TO " ".
+SET mTime TO " ".
 
-// Launch Status - Set to 1 when guidance complete
-SET launchStatus TO 0.
-SET status TO "".
-
-// Set initial TWR variables
+// Set TWR function variables
 SET current TO "current".
 SET maximum TO "maximum".
 
@@ -17,6 +22,3 @@ LOCK progradePitch TO navPitch(SRFPROGRADE:VECTOR).
 
 // Determine Tower Height
 SET towerHeight TO shipHeight() + ALT:RADAR.
-
-//Timer Function
-SET mTime TO 0.
