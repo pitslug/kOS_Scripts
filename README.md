@@ -6,6 +6,7 @@ Todo List:
 
 - Switch naming to AGS
 - Make version no. a Variable
+- Fix Event Log overflow
 - Lazy Global off
 - Boot File
 - Main menu
