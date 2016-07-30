@@ -1,4 +1,4 @@
-// ALGS Launch Settings
+// AGS Launch Settings
 // List variables for launch parameters
 
 // This may need to be ship specific
@@ -14,3 +14,6 @@ SET azimuth TO 90.
 
 //Set Targets
 SET tgtApo to 250000.
+
+//Set Staging Conditions
+// 1 = SRBs, 2 = Hot Stage, 3 = RCS

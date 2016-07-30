@@ -1,4 +1,4 @@
-// ALGS Countdown and Guidance Script
+// AGS Countdown and Guidance Script
 // Run the countdown and switch to active guidance once tower clear
 
 SET launchStatus TO count_mode.
@@ -20,7 +20,7 @@ UNTIL launchStatus = complete {
     FROM {LOCAL y IS cdTimer.} UNTIL y = 10 STEP {SET y TO y - 5.} DO {
 
       IF y = 15 addMessage("T-15s", "All systems are Go!").
-      timerUpdate("T-"+y+"s").
+      timerUpdate("T-" + y + "s").
       WAIT 5.
     }
 
@@ -45,20 +45,18 @@ UNTIL launchStatus = complete {
     }
 
     addMessage("T+"+ROUND(MISSIONTIME)+"s", "TWR is "+ROUND(TWRCalc(current),2)). //TEMPORARY CHECK
+
     // Check thrust before releasing clamps - abort if engine failure.
     IF TWRCalc(current) > 1 {
-
-      //addMessage("T+"+ROUND(MISSIONTIME)+"s", "All Engines Running - Releasing Clamps").
       addMessage(" ", "All Engines Running - Releasing Clamps").
     	LOCK STEERING TO North + R(-90,0,0). // Keep at initial orientation until guidance active
     	STAGE.
 
-      WAIT 0.001.
       SET launchStatus TO lift_mode. // Next Loop
+      WAIT 0.001.
 
     }	ELSE {
 
-    	//addMessage("T+"+ROUND(MISSIONTIME)+"s", "Engine Failure. Launch Aborted").
       addMessage(" ", "Engine Failure. Launch Aborted").
     	LOCK THROTTLE TO 0.
     }
@@ -72,21 +70,23 @@ UNTIL launchStatus = complete {
     WHEN SHIP:AIRSPEED > 5 THEN {
       addMessage(mTime, "LIFT-OFF of "+shipName).
       statusUpdate("Lift-off").
-
-      // Engage active guidance once tower clear
-      WAIT UNTIL ALT:RADAR > towerHeight.
-      addMessage(mTime, "Tower Clear. Engaging Guidance Control").
-      statusUpdate("Active Guidance Initiated").
-
-      WAIT 1.
-      SET launchStatus TO turn_mode. // Next Loop
     }
-  } // End lift_mode
+
+    WAIT UNTIL ALT:RADAR > towerHeight.
+
+    addMessage(mTime, "Tower Clear. Engaging Guidance Control").
+    statusUpdate("Active Guidance Initiated").
+
+    WAIT 1.
+
+    SET launchStatus TO passive_mode. // Next Loop
+    WAIT 0.001.
+
+    } // End lift_mode
+
 
   // Start turn_mode
-  IF launchStatus = turn_mode {
-
-    LOCK mTime to "T+"+ROUND(MISSIONTIME)+"s".
+  IF launchStatus = passive_mode {
 
     ///////////////////////////////////
     // Start Active Guidance Control //
@@ -96,13 +96,16 @@ UNTIL launchStatus = complete {
     IF TWRCalc(maximum) > 1.7
       SET pitchStart to 50.
     ELSE IF TWRCalc(maximum) < 1.7 AND TWRCalc(maximum) > 1.3
-      SET pitchStart TO 65.
+      SET pitchStart TO 60.
     ELSE
-      SET pitchStart TO 80.
+      SET pitchStart TO 70.
+
+      SET pitch TO 89.
 
     // Start Roll Program once Tower Clear
     addMessage(mTime, "Executing Roll Program").
     LOCK STEERING to HEADING(azimuth,pitch) + R(0,0,roll).
+    WHEN abs(navRoll() - roll) < 1 THEN { addMessage(mTime, "Roll Complete"). }
 
     // Start Pitch Program at correct speed
     WHEN SHIP:AIRSPEED >= pitchStart THEN {
@@ -121,20 +124,4 @@ UNTIL launchStatus = complete {
 
   } // End turn_mode
 
-
-  PRINT "MET:              " + mTime  + "              "  AT (0,7).
-
 } // End Main Loop
-
-
-
-
-//UNTIL cdStatus = 1 {
-
-//  PRINT "MET:              " + mTime  + "              "  AT (0,7).
-
-//}
-
-
-
-//WAIT UNTIL cdStatus = 1. // To ensure Guidance doesn't start early

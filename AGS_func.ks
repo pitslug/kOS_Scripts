@@ -1,4 +1,4 @@
-// ALGS Standard Functions Library
+// AGS Standard Functions Library
 // Additional functions used to run launch and guidance
 
 

@@ -1,4 +1,4 @@
-// ALGS Navigation Functions Library
+// AGS Navigation Functions Library
 // Used to determine current ship directions from navball.
 // Based on lib_navball.ks by KSLib team, shared under MIT License.
 
