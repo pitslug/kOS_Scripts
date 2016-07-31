@@ -1,9 +1,10 @@
 // AGS Display Setup
 // Sets up the terminal for info display
+@LAZYGLOBAL OFF.
 
-SET mCount to TERMINAL:HEIGHT - 2.
-SET rCount to 19.
-SET iCount to 19.
+LOCAL mCount IS TERMINAL:HEIGHT - 2.
+LOCAL rCount IS 19.
+LOCAL iCount IS 19.
 
 FUNCTION mainMenuDisplay {
 
@@ -75,9 +76,12 @@ FUNCTION launchSeqDisplay {
     PRINT "================================================"     AT (0,3).
     PRINT " "                                                    AT (0,4).
     PRINT "       LAUNCH NOT POSSIBLE AT THIS TIME         "     AT (0,5).
-    PRINT "            RETURNING TO MAIN MENU              "     AT (0,6).
+    PRINT " "                                                    AT (0,6).
+    PRINT "            RETURNING TO MAIN MENU              "     AT (0,7).
 
-    WAIT 5.
+    WAIT 3.
+
+    mainMenuDisplay().    
 
   } ELSE {
 
@@ -89,8 +93,8 @@ FUNCTION launchSeqDisplay {
     PRINT "================================================"     AT (0,3).
     PRINT " "                                                    AT (0,4).
     PRINT "Mission Name:     " + shipName                        AT (0,5).
-    PRINT "Status:           " + vesselStatus                    AT (0,6).
-    PRINT "MET:              " + mTime                           AT (0,7).
+    PRINT "Status:           "                                   AT (0,6).
+    PRINT "MET:              "                                   AT (0,7).
     PRINT " "                                                    AT (0,8).
     PRINT "Launch Parameters:"                                   AT (0,9).
     PRINT "Heading           " + azimuth + " deg"                AT (0,10).

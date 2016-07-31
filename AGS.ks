@@ -1,5 +1,6 @@
 // AGS Loader Script
 // Initializes terminal and all dependencies then starts program.
+@LAZYGLOBAL OFF.
 
 CLEARSCREEN.
 SET TERMINAL:BRIGHTNESS TO 0.85.
@@ -13,7 +14,7 @@ RUN ONCE AGS_vars.
 RUN ONCE AGS_settings.
 RUN ONCE AGS_display.
 
-mainMenuDisplay().
+launchSeqDisplay().
 
 WAIT 1.
 

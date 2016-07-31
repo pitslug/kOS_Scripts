@@ -7,8 +7,8 @@ Todo List:
 - Switch naming to AGS (DONE)
 - Make version no. a Variable (DONE)
 - Fix Event Log overflow (DONE)
-
-- Lazy Global off (NEXT)
+- Lazy Global off (DONE)
+_________________________________________
 - Finalise trajectory code (NEXT)
 
 - Boot File (STARTED - Needs expanding when closer to complete)
@@ -17,7 +17,7 @@ Todo List:
 - Fix display - NOT DISPLAYING TIME
 
 - Add log files for execution messages
-- Add launch window lookup
 - Abort Sequences
 - Staging (including ullage)
+- Add launch window lookup
 - Additional programs

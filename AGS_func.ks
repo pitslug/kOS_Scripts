@@ -1,22 +1,23 @@
 // AGS Standard Functions Library
 // Additional functions used to run launch and guidance
-
+@LAZYGLOBAL OFF.
 
 // Determine height of the current craft
 FUNCTION shipHeight {
+  LOCAL partList IS list().
   LIST PARTS IN partList.
   LOCK r3 TO FACING:FOREVECTOR.
-  SET highestPart to 0.
-  SET lowestPart to 0.
+  LOCAL highestPart TO 0.
+  LOCAL lowestPart TO 0.
   FOR part in partList{
-      SET v TO part:position.
-      SET currentPart to r3:x*v:x + r3:y*v:y + r3:z*v:z.
+      LOCAL v TO part:position.
+      LOCAL currentPart TO r3:x*v:x + r3:y*v:y + r3:z*v:z.
       IF currentPart > highestPart
-          SET highestPart to currentPart.
+          SET highestPart TO currentPart.
       ELSE IF currentPart < lowestPart
-          SET lowestPart to currentPart.
+          SET lowestPart TO currentPart.
   }
-  SET height TO highestPart - lowestPart.
+  LOCAL height TO highestPart - lowestPart.
   RETURN height.
 }
 
@@ -24,9 +25,10 @@ FUNCTION shipHeight {
 // Determine the current and maximum available thrust
 FUNCTION TWRCalc {
   PARAMETER twr.
-  LOCAL currentThrust is 0.
-  LOCAL maximumThrust is 0.
-  LOCAL availableThrust is 0.
+  LOCAL engList IS list().
+  LOCAL currentThrust IS 0.
+  LOCAL maximumThrust IS 0.
+  LOCAL availableThrust IS 0.
 
   // Determine local Gravity
   LOCK g TO EARTH:MU / (ALTITUDE + EARTH:RADIUS)^2.
@@ -46,38 +48,25 @@ FUNCTION TWRCalc {
 
 
 
-
-//declare local function flightreadout{
-//	print "==============================="  at (0,1).
-//	print "========Flight Computer========"  at (0,2).
-//	print "==============================="  at (0,3).
-//	print "Vessel Status: " + status + "                             " at (0,4).
-//	print "Vessel Statistics:"               at (0,5).
-//	print "Current TWR:    "+ currentTWR     at (0,6).
-//	print "Current Mass:   "+ ship:mass      at (0,7).
-//	print "Heading:        " + azimuth       at (0,8).
-//	print "Current Vel:    " + ship:airspeed at (0,9).
+//declare function flameout{
+//	LIST ENGINES IN mylist.
+//	FOR eng IN mylist {
+//		if eng:flameout{
+//			local curstage to eng:stage.
+//			local parentpart to eng:parent.
+//
+//			until not parentpart:hasparent{
+//				if parentpart:modules:contains("ModuleAnchoredDecoupler") {
+//					parentpart:getmodule("ModuleAnchoredDecoupler"):doevent("Decouple").
+//					break.
+//				}
+//				else
+//					set parentpart to parentpart:parent.
+//			}
+//		}
+//	}
+//  thrustCalc().
+//  if maxTWR < 0.2 {
+//    print "NEED TO STAGE".
+//  }
 //}
-
-declare function flameout{
-	LIST ENGINES IN mylist.
-	FOR eng IN mylist {
-		if eng:flameout{
-			local curstage to eng:stage.
-			local parentpart to eng:parent.
-
-			until not parentpart:hasparent{
-				if parentpart:modules:contains("ModuleAnchoredDecoupler") {
-					parentpart:getmodule("ModuleAnchoredDecoupler"):doevent("Decouple").
-					break.
-				}
-				else
-					set parentpart to parentpart:parent.
-			}
-		}
-	}
-  thrustCalc().
-  if maxTWR < 0.2 {
-    print "NEED TO STAGE".
-  }
-}

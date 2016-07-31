@@ -1,12 +1,8 @@
 // AGS Navigation Functions Library
 // Used to determine current ship directions from navball.
 // Based on lib_navball.ks by KSLib team, shared under MIT License.
+@LAZYGLOBAL OFF.
 
-// Get Pitch from input Vector
-FUNCTION navPitch {
-	PARAMETER vector.
-	RETURN 90-VANG(SHIP:UP:VECTOR,VECTOR).
-}
 
 FUNCTION normalVector {
 	PARAMETER ves.
@@ -20,6 +16,14 @@ FUNCTION east {
 	RETURN VCRS(SHIP:UP:VECTOR, SHIP:NORTH:VECTOR).
 }
 
+
+// Get Pitch from input Vector
+FUNCTION navPitch {
+	PARAMETER vector.
+	RETURN 90-VANG(SHIP:UP:VECTOR,VECTOR).
+}
+
+
 // Get current Roll from navball
 FUNCTION navRoll {
 	IF VANG(SHIP:FACING:VECTOR, SHIP:UP:VECTOR) < 0.2 { RETURN 0. } //	deadzone against gimbal lock (when vehicle is too vertical, roll angle becomes indeterminate)
@@ -30,5 +34,5 @@ FUNCTION navRoll {
 		} ELSE {
 			RETURN -90-raw.
 		}
-	}.
+	}
 }

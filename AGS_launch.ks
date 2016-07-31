@@ -1,8 +1,9 @@
 // AGS Countdown and Guidance Script
 // Run the countdown and switch to active guidance once tower clear
+@LAZYGLOBAL OFF.
 
+//SET launchStatus TO count_mode.
 SET launchStatus TO count_mode.
-launchSeqDisplay().
 
 UNTIL launchStatus = complete {
 
@@ -30,8 +31,8 @@ UNTIL launchStatus = complete {
     FROM {LOCAL x IS 10.} UNTIL x = 0 STEP {SET x TO x - 1.} DO {
 
       IF x = 10 addMessage("T-10s", "Guidance is internal").
-    	SET mTime TO "T-" + x + "s".
-      timerUpdate(mTime).
+    	LOCAL cdTime IS "T-" + x + "s".
+      timerUpdate(cdTime).
 
     	// Pre-ignition for engine spooling
     	IF x = CEILING(cdIgnite) {
@@ -96,6 +97,7 @@ UNTIL launchStatus = complete {
     ///////////////////////////////////
 
     // Set Pitching Start Speed
+    LOCAL pitchStart IS 0.
     IF TWRCalc(maximum) > 1.7
       SET pitchStart to 50.
     ELSE IF TWRCalc(maximum) < 1.7 AND TWRCalc(maximum) > 1.3
