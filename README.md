@@ -7,13 +7,15 @@ Todo List:
 - Switch naming to AGS (DONE)
 - Make version no. a Variable (DONE)
 - Fix Event Log overflow (DONE)
+
 - Lazy Global off (NEXT)
+- Finalise trajectory code (NEXT)
 
-- Boot File (Started - Needs expanding when closer to complete)
-- Main menu (NEXT)
+- Boot File (STARTED - Needs expanding when closer to complete)
+- Main menu (STARTED - Needs more scripts to be useful)
 
-- Fix display - REPEATING RANDOM WHEN's AND NOT DISPLAYING TIME
-- Finalise trajectory code
+- Fix display - NOT DISPLAYING TIME
+
 - Add log files for execution messages
 - Add launch window lookup
 - Abort Sequences

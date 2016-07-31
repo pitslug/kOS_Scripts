@@ -2,6 +2,8 @@
 // Run the countdown and switch to active guidance once tower clear
 
 SET launchStatus TO count_mode.
+launchSeqDisplay().
+
 UNTIL launchStatus = complete {
 
   SAS off.
@@ -59,6 +61,7 @@ UNTIL launchStatus = complete {
 
       addMessage(" ", "Engine Failure. Launch Aborted").
     	LOCK THROTTLE TO 0.
+      BREAK.
     }
   } // End count_mode
 
