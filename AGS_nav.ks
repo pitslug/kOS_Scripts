@@ -6,8 +6,8 @@
 
 FUNCTION normalVector {
 	PARAMETER ves.
-	LOCAL vel TO VELOCITYAT(ves,TIME:SECONDS):ORBIT.
-	LOCAL norm TO VCRS(vel,ves:up:vector).
+	LOCAL vel IS VELOCITYAT(ves,TIME:SECONDS):ORBIT.
+	LOCAL norm IS VCRS(vel,ves:up:vector).
 	RETURN norm:NORMALIZED.
 }
 

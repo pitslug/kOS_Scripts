@@ -10,10 +10,10 @@ FUNCTION mainMenuDisplay {
 
   CLEARSCREEN.
 
-  PRINT "================================================"     AT (0,0).
-  PRINT "    AGS - Active Guidance System (Ver "+verNum+")  "  AT (0,1).
-  PRINT "                  Main Menu                     "     AT (0,2).
-  PRINT "================================================"     AT (0,3).
+  PRINT "===================================================="     AT (0,0).
+  PRINT "      AGS - Active Guidance System (Ver "+verNum+")    "  AT (0,1).
+  PRINT "                    Main Menu                       "     AT (0,2).
+  PRINT "===================================================="     AT (0,3).
   PRINT " "                                                    AT (0,4).
   PRINT " [1]     Launch Menu "                                AT (0,5).
   PRINT " [2]     Maneuver Menu "                              AT (0,6).
@@ -21,7 +21,7 @@ FUNCTION mainMenuDisplay {
   PRINT " [4]     Landing Menu "                               AT (0,8).
   PRINT " "                                                    AT (0,9).
   PRINT " "                                                    AT (0,10).
-  PRINT "================================================"     AT (0,11).
+  PRINT "===================================================="     AT (0,11).
 
   UNTIL FALSE {
 
@@ -38,10 +38,10 @@ FUNCTION launchMenuDisplay {
 
   CLEARSCREEN.
 
-  PRINT "================================================"     AT (0,0).
-  PRINT "    AGS - Active Guidance System (Ver "+verNum+")  "  AT (0,1).
-  PRINT "                  Launch Menu                   "     AT (0,2).
-  PRINT "================================================"     AT (0,3).
+  PRINT "===================================================="     AT (0,0).
+  PRINT "      AGS - Active Guidance System (Ver "+verNum+")    "  AT (0,1).
+  PRINT "                    Launch Menu                     "     AT (0,2).
+  PRINT "===================================================="     AT (0,3).
   PRINT " "                                                    AT (0,4).
   PRINT " [1]     Determine Launch Window "                    AT (0,5).
   PRINT " [2]     Set Launch Parameters "                      AT (0,6).
@@ -52,7 +52,7 @@ FUNCTION launchMenuDisplay {
   PRINT " [0]     Return to Main Menu "                        AT (0,11).
   PRINT " "                                                    AT (0,12).
   PRINT " "                                                    AT (0,13).
-  PRINT "================================================"     AT (0,14).
+  PRINT "===================================================="     AT (0,14).
 
   UNTIL FALSE {
 
@@ -70,31 +70,31 @@ FUNCTION launchSeqDisplay {
   CLEARSCREEN.
 
   IF launchStatus = complete OR status <> "PRELAUNCH" {
-    PRINT "================================================"     AT (0,0).
-    PRINT "    AGS - Active Guidance System (Ver "+verNum+")  "  AT (0,1).
-    PRINT "               Launch Sequence                  "     AT (0,2).
-    PRINT "================================================"     AT (0,3).
+    PRINT "===================================================="     AT (0,0).
+    PRINT "      AGS - Active Guidance System (Ver "+verNum+")    "  AT (0,1).
+    PRINT "                 Launch Sequence                    "     AT (0,2).
+    PRINT "===================================================="     AT (0,3).
     PRINT " "                                                    AT (0,4).
-    PRINT "       LAUNCH NOT POSSIBLE AT THIS TIME         "     AT (0,5).
+    PRINT "         LAUNCH NOT POSSIBLE AT THIS TIME           "     AT (0,5).
     PRINT " "                                                    AT (0,6).
-    PRINT "            RETURNING TO MAIN MENU              "     AT (0,7).
+    PRINT "              RETURNING TO MAIN MENU                "     AT (0,7).
 
     WAIT 3.
 
-    mainMenuDisplay().    
+    mainMenuDisplay().
 
   } ELSE {
 
   //IF targetLaunch = 1 { SET relInc to VANG(normalvector(SHIP),normalvector(TARGET)). }
 
-    PRINT "================================================"     AT (0,0).
-    PRINT "    AGS - Active Guidance System (Ver "+verNum+")  "  AT (0,1).
-    PRINT "               Launch Sequence                  "     AT (0,2).
-    PRINT "================================================"     AT (0,3).
+    PRINT "===================================================="     AT (0,0).
+    PRINT "      AGS - Active Guidance System (Ver "+verNum+")    "  AT (0,1).
+    PRINT "                 Launch Sequence                    "     AT (0,2).
+    PRINT "===================================================="     AT (0,3).
     PRINT " "                                                    AT (0,4).
     PRINT "Mission Name:     " + shipName                        AT (0,5).
     PRINT "Status:           "                                   AT (0,6).
-    PRINT "MET:              "                                   AT (0,7).
+    PRINT "Countdown:        "                                   AT (0,7).
     PRINT " "                                                    AT (0,8).
     PRINT "Launch Parameters:"                                   AT (0,9).
     PRINT "Heading           " + azimuth + " deg"                AT (0,10).
@@ -102,12 +102,14 @@ FUNCTION launchSeqDisplay {
     PRINT "Target:           " + launchTgt                       AT (0,12).
     PRINT "Rel. Inclination: " + relInc                          AT (0,13).
     PRINT " "                                                    AT (0,14).
-    PRINT "                   EVENT LOG                    "     AT (0,15).
-    PRINT "================================================"     AT (0,16).
-    PRINT " TIME       MESSAGE                             "     AT (0,17).
+    PRINT "                     EVENT LOG                      "     AT (0,15).
+    PRINT "===================================================="     AT (0,16).
+    PRINT " TIME           MESSAGE                             "     AT (0,17).
     PRINT " "                                                    AT (0,18).
 
     RUN ONCE AGS_launch.
+
+    WHEN launchStatus = complete THEN {mainMenuDisplay().}
   }
 }
 
@@ -116,9 +118,9 @@ FUNCTION addMessage {
   PARAMETER msgTime.
   PARAMETER msg.
 
-  IF rCount <= mCount {
+  IF iCount <= mCount {
     PRINT msgTime AT (0,iCount).
-    PRINT msg AT (10,iCount).
+    PRINT msg AT (14,iCount).
     SET iCount TO iCount + 1.
     RETURN.
 
@@ -129,7 +131,7 @@ FUNCTION addMessage {
     }
     SET iCount TO rCount.
     PRINT msgTime AT (0,iCount).
-    PRINT msg AT (10,iCount).
+    PRINT msg AT (14,iCount).
     SET iCount TO iCount + 1.
     RETURN.
   }

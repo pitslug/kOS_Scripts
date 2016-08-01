@@ -31,6 +31,7 @@ FUNCTION TWRCalc {
   LOCAL availableThrust IS 0.
 
   // Determine local Gravity
+  GLOBAL g IS 0.
   LOCK g TO EARTH:MU / (ALTITUDE + EARTH:RADIUS)^2.
 
   LIST ENGINES IN engList.
@@ -47,6 +48,35 @@ FUNCTION TWRCalc {
 }
 
 
+// CONVERT TIME TO D:HH:MM:SS
+// COURTESY OF Farsyte and ElWanderer_KSP
+FUNCTION convertTime {
+  PARAMETER cTime.
+
+  LOCAL hpd IS KUNIVERSE:HOURSPERDAY.
+  LOCAL s TO FLOOR(cTime).
+  LOCAL m TO FLOOR(s/60).
+  SET s TO MOD(s,60).
+  LOCAL h TO FLOOR(m/60).
+  SET m TO MOD(m,60).
+  LOCAL d TO FLOOR(h/hpd).
+  SET h TO MOD(h,hpd).
+
+  IF d = 0 {
+    RETURN padZ(h) + ":" + padZ(m) + ":" + padZ(s).
+  } ELSE {
+    RETURN d + "days " + padZ(h) + ":" + padZ(m) + ":" + padZ(s).
+  }
+
+FUNCTION padZ {
+  PARAMETER t.
+    RETURN (""+t):PADLEFT(2):REPLACE(" ","0").
+}
+
+
+
+
+}
 
 //declare function flameout{
 //	LIST ENGINES IN mylist.

@@ -8,13 +8,16 @@ Todo List:
 - Make version no. a Variable (DONE)
 - Fix Event Log overflow (DONE)
 - Lazy Global off (DONE)
+- Fix display - (DONE)
+- Add H:M:S to MET (DONE)
 _________________________________________
 - Finalise trajectory code (NEXT)
+
 
 - Boot File (STARTED - Needs expanding when closer to complete)
 - Main menu (STARTED - Needs more scripts to be useful)
 
-- Fix display - NOT DISPLAYING TIME
+- Add option for with and without Pres
 
 - Add log files for execution messages
 - Abort Sequences
