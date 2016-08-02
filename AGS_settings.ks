@@ -16,7 +16,7 @@ GLOBAL tgtApo IS 250000.
 GLOBAL tgtApoETA IS 90.
 
 GLOBAL aoaLim IS 5.   // Limit Angle of Attack
-GLOBAL maxCorrection IS 20.
+GLOBAL maxCorrection IS 40.
 
 //Set Staging Conditions
 // 1 = SRBs, 2 = Hot Stage, 3 = RCS

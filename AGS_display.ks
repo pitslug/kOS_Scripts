@@ -127,7 +127,7 @@ FUNCTION addMessage {
   } ELSE {
 
     FROM {LOCAL x IS rCount.} UNTIL x = iCount STEP {SET x TO x + 1.} DO {
-      PRINT "                                                " AT (0,x).
+      PRINT "                                                    " AT (0,x).
     }
     SET iCount TO rCount.
     PRINT msgTime AT (0,iCount).

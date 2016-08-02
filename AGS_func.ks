@@ -67,15 +67,24 @@ FUNCTION convertTime {
   } ELSE {
     RETURN d + "days " + padZ(h) + ":" + padZ(m) + ":" + padZ(s).
   }
+}
 
 FUNCTION padZ {
   PARAMETER t.
     RETURN (""+t):PADLEFT(2):REPLACE(" ","0").
 }
 
+FUNCTION findMaxQ {
+  PARAMETER mTime.
 
-
-
+  LOCAL newQ IS 0.
+  SET newQ TO SHIP:DYNAMICPRESSURE.
+  IF newQ >= maxQ {
+    SET maxQ TO newQ.
+  } ELSE {
+    SET maxQ_found TO 1.
+    addMessage(mTime, "Passing Max Q - " + ROUND(maxQ*CONSTANT:ATMtokPa,3) + "kPa").
+  }
 }
 
 //declare function flameout{

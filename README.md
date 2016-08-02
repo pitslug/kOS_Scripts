@@ -10,17 +10,24 @@ Todo List:
 - Lazy Global off (DONE)
 - Fix display - (DONE)
 - Add H:M:S to MET (DONE)
-_________________________________________
-- Finalise trajectory code (NEXT)
+- Add a Max Q readout (DONE)
 
+- Finalise trajectory code (TESTING) Concept if good, need to fine tune with PID loop
+_________________________________________
+
+
+- Add references + thanks
+- Staging (including ullage) (NEXT)
+
+- Add log files for execution messages
+- Abort Sequences - Failure Checks
+- Fine tune inclination to minimum
 
 - Boot File (STARTED - Needs expanding when closer to complete)
 - Main menu (STARTED - Needs more scripts to be useful)
 
 - Add option for with and without Pres
+- Add Option for with and without PEGAS list
 
-- Add log files for execution messages
-- Abort Sequences
-- Staging (including ullage)
 - Add launch window lookup
 - Additional programs

@@ -3,7 +3,7 @@
 @LAZYGLOBAL OFF.
 
 // Set program version number
-LOCAL verNum IS "0.3.4".
+LOCAL verNum IS "0.3.5".
 
 // Declare Variable for Launch Script
 LOCAL incomplete IS 0.
@@ -11,16 +11,17 @@ LOCAL count_mode IS 1.
 LOCAL lift_mode IS 2.
 LOCAL passive_mode IS 3.
 LOCAL active_mode IS 4.
-LOCAL complete TO 5.
+LOCAL complete IS 5.
 GLOBAL launchStatus IS incomplete.
 
 // Set Variables for display
-GLOBAL shipName TO SHIP:NAME.
+GLOBAL shipName IS SHIP:NAME.
+GLOBAL mTime IS "".
 
 
 // Set TWR function variables
-LOCAL current TO "current".
-LOCAL maximum TO "maximum".
+LOCAL current IS "current".
+LOCAL maximum IS "maximum".
 
 // Function for determining launch prograde vector
 LOCK progradePitch TO navPitch(SRFPROGRADE:VECTOR).
@@ -28,6 +29,9 @@ LOCK progradePitch TO navPitch(SRFPROGRADE:VECTOR).
 // Determine Tower Height
 LOCAL towerHeight IS shipHeight() + ALT:RADAR.
 
-LOCAL targetLaunch TO 0.
-LOCAL launchTgt to "".
-LOCAL relInc to "".
+LOCAL targetLaunch IS 0.
+LOCAL launchTgt IS "".
+LOCAL relInc IS "".
+
+GLOBAL maxQ IS 0.
+GLOBAL maxQ_found IS 0.
