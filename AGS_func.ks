@@ -30,8 +30,6 @@ FUNCTION TWRCalc {
   LOCAL maximumThrust IS 0.
   LOCAL availableThrust IS 0.
 
-  // Determine local Gravity
-  GLOBAL g IS 0.
   LOCK g TO EARTH:MU / (ALTITUDE + EARTH:RADIUS)^2.
 
   LIST ENGINES IN engList.
@@ -84,6 +82,28 @@ FUNCTION findMaxQ {
   } ELSE {
     SET maxQ_found TO 1.
     addMessage(mTime, "Passing Max Q - " + ROUND(maxQ*CONSTANT:ATMtokPa,3) + "kPa").
+  }
+}
+
+FUNCTION activateStage {
+  PARAMETER mTime.
+
+  IF TWRCalc(maximum) < 0.2 {
+
+    IF StageGroup = 1 {
+      addMessage(mTime, "First Stage - MECO").
+      WAIT 1.
+      STAGE.
+      addMessage(mTime, "First Stage Separation").
+      WAIT 1.
+      STAGE.
+      addMessage(mTime, "Performing Ullage Burn").
+      WAIT 1.
+      STAGE.
+      addMessage(mTime, "Second Stage Ignition").
+      SET stageGroup to stageGroup + 1.
+      WAIT 1.
+    }
   }
 }
 

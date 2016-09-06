@@ -38,11 +38,11 @@ title('Sweep results surface');
 %simple check: are there definitely no solutions?
 if max(ap_z)<ap_target
     disp('Target apoapsis not reached!')
-    break;
+    return;
 end;
 if min(ap_z)>ap_target
     disp('Target apoapsis overshot!')
-    break;
+    return;
 end;
 %slice at solution value (obtains 1D solution curve)
 figure(2);

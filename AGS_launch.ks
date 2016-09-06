@@ -62,6 +62,7 @@ UNTIL launchStatus = complete {
 
       addMessage(" ", "Engine Failure. Launch Aborted").
     	LOCK THROTTLE TO 0.
+      WAIT 5.
       BREAK.
     }
   } // End count_mode
@@ -104,6 +105,7 @@ UNTIL launchStatus = complete {
     LOCAL atm_density IS 1.
     LOCAL AoA IS 0.
     LOCAL tgtLiftPitch IS 90.
+    LOCAL i IS 0.
 
     GLOBAL apoETA IS 0.
     GLOBAL tgtPitch IS 90.
@@ -111,7 +113,6 @@ UNTIL launchStatus = complete {
     LOCK atmp_current TO SHIP:SENSORS:PRES.
     LOCK atm_density TO atmp_current / atmp_ground.
     LOCK apoETA TO MAX(0,ETA:APOAPSIS).
-    LOCK AoA TO progradePitch() - tgtPitch.
 
     // Minimise AoA to aoaLim
     LOCK tgtPitch TO MIN(90 - (45 * (1 - atm_density)),progradePitch() + aoaLim).
@@ -142,27 +143,25 @@ UNTIL launchStatus = complete {
     UNTIL FALSE {
       timerUpdate(mTime).
       WAIT 0.5.
-      IF apoETA >= tgtApoETA {
+
+      IF tgtPitch < 45 {
         addMessage(mTime, "Passive Guidance Complete").
         WAIT 1.
         addMessage(mTime, "Switching to Active Guidance").
-        addMessage(" ", " ").
         statusUpdate("Active Guidance Mode").
         SET launchStatus TO active_mode.  // Next Loop
         UNLOCK tgtPitch.
-        SET tgtPitch TO MIN(90 - (45 * (1 - atm_density)),progradePitch() + aoaLim).
         BREAK.
       }
 
       IF maxQ_found = 0 findMaxQ(mTime).
+      activateStage(mTime).
 
       WAIT 0.001.
 
     }
   } // End passive_mode
 
-
-  // Start active_mode
   // Start active_mode
   IF launchStatus = active_mode {
 
@@ -170,78 +169,29 @@ UNTIL launchStatus = complete {
     // Start ACTIVE Guidance Control //
     ///////////////////////////////////
 
-    LOCAL atmoEndAlt IS 140000.  // Was 110000
-    LOCAL endturn_altitude IS ALTITUDE.
-    LOCAL tolerance IS tgtApoETA * 0.5.
-    LOCAL shipangle IS 0.
-    LOCAL correctiondamp IS 0.
-    LOCAL mx IS 0.
-    LOCAL mi IS 0.
-    LOCAL tApoEta IS tgtApoETA.
-    LOCAL ae IS 0.
-    LOCAL correction IS 0.
-    LOCAL dispApoEta is 0.
-
-    //LOCAL currentTWR IS TWRCalc(current).
-    //LOCAL lastTWR is TWRCalc(current).
-
-    LOCAL oldApoETA is apoETA.
-    LOCAL dt IS 0.
-
-    LOCAL targetorbitspeed IS sqrt(ship:body:mu / (tgtApo+ship:body:radius)).
-    LOCAL endturn_orbitspeed IS ship:velocity:orbit:mag.
-
-
-    lock shipangle to vang(ship:up:vector, ship:srfprograde:vector).
-    lock correctiondamp to (altitude - endturn_altitude) / (atmoEndAlt - endturn_altitude).
-    lock mx to shipangle + (maxcorrection * correctiondamp).
-    lock mi to shipangle - (maxcorrection * correctiondamp).
-
-    lock orbitSpeedFactor to ((targetorbitspeed - ship:velocity:orbit:mag) / (targetorbitspeed - endturn_orbitspeed)).
-    lock tApoEta to tgtApoETA * orbitSpeedFactor.
-    lock correction to max(-maxcorrection*0.3,((tApoEta - ae) / tolerance) * maxcorrection).
+    LOCAL curApo IS APOAPSIS.
+    //LOCAL curPitch IS progradePitch()+5.
 
     LOCK STEERING TO HEADING(azimuth,tgtPitch) + R(0,0,tgtRoll).
 
-    until periapsis > MAX(160000,tgtApo * 0.8) AND APOAPSIS >= tgtApo {
+    UNTIL PERIAPSIS >= tgtApo - 5000 {
 
-      IF APOAPSIS < 0.8*tgtApo {
-        //SET tgtPitch to MIN(MAX(progradePitch,30),progradePitch() + correction).
-        //SET currentTWR TO MAX(0.5,TWRCalc(current)).
-        //SET tgtPitch to MIN(30, arcsin(0.5/MAX(lastTWR,currentTWR))).
-
-        SET dt TO apoETA - oldApoETA.
-        IF dt > 0 SET tgtPitch to tgtPitch - 0.5.
-        IF dt < 0 SET tgtPitch to tgtPitch + 0.5.
-        SET oldApoETA to apoETA.
-
-        //IF currentTWR >= lastTWR SET lastTWR TO currentTWR.
-        //IF currentTWR < lastTWR SET lastTWR to 0.5.
-
-        SET dispApoEta to apoETA.
-
+      IF VERTICALSPEED > 100 {
+        IF APOAPSIS <= tgtApo SET tgtPitch TO 45 * (1 - ((APOAPSIS-curApo)/((tgtApo+10000)-curApo))).
+        IF APOAPSIS > tgtApo SET tgtPitch TO -5 * (APOAPSIS/tgtApo).
       } ELSE {
-        IF ship:verticalspeed > 0 {
-          set ae to apoeta.
-          SET dispApoEta to apoETA.
-          SET tgtPitch to 90 - max(mi,min(mx, shipangle - correction )).
-        } ELSE {
-          set ae to 0.
-          SET dispApoEta to 0.
-          SET tgtPitch to 90 - max(mi,min(mx, shipangle - correction )).
-        }
+        IF APOAPSIS <= tgtApo SET tgtPitch TO arcsin((mass/maxthrust)*(g-(orbit:velocity:orbit:mag^2/(EARTH:RADIUS + ALTITUDE)))) * (APOAPSIS/tgtApo).
+        IF APOAPSIS > tgtApo SET tgtPitch TO -0.20 + arcsin((mass/maxthrust)*(g-(orbit:velocity:orbit:mag^2/(EARTH:RADIUS + ALTITUDE)))).
       }
-
-      PRINT ("Target Apo ETA:   " + ROUND(tApoEta,3)) AT (10,iCount).
-      PRINT ("Current Apo ETA:  " + ROUND(dispApoEta,3)) AT (10,iCount + 1).
 
       IF maxQ_found = 0 findMaxQ(mTime).
       timerUpdate(mTime).
-      WAIT 0.1.
+      activateStage(mTime).
+
     }
 
-    PRINT "                                                    " AT (0,iCount).
-    PRINT "                                                    " AT (0,iCount + 1).
+    WAIT 0.1.
+
     LOCK THROTTLE TO 0.
 
     SET launchStatus TO complete. // End Loops
@@ -249,17 +199,20 @@ UNTIL launchStatus = complete {
 
   } // End active_mode
 
+  IF launchStatus = complete {
+    SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
+    UNLOCK THROTTLE.
+    RCS ON.
+    UNLOCK STEERING.
+    addMessage(mTime, "Launch Program Complete").
+    addMessage(" ", "Final Orbit: " + ROUND(APOAPSIS/1000) + "km x " + ROUND(PERIAPSIS/1000) + "km").
+    statusUpdate("Launch Program Complete").
+
+    WAIT 5.
+    BREAK.
+  }
+
 } // End Main Loop
 
-SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
-UNLOCK THROTTLE.
-RCS ON.
-LOCK STEERING TO SHIP:PROGRADE + R(0,0,tgtRoll).
-addMessage(mTime, "Launch Program Complete").
-addMessage(" ", "Final Orbit: " + ROUND(APOAPSIS/1000) + "km x " + ROUND(PERIAPSIS/1000) + "km").
-statusUpdate("Launch Program Complete").
-
-WAIT 5.
-
 SAS ON.
-mainMenuDisplay().
+//mainMenuDisplay().

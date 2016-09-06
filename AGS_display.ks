@@ -69,7 +69,7 @@ FUNCTION launchSeqDisplay {
 
   CLEARSCREEN.
 
-  IF launchStatus = complete OR status <> "PRELAUNCH" {
+  IF launchStatus = complete {
     PRINT "===================================================="     AT (0,0).
     PRINT "      AGS - Active Guidance System (Ver "+verNum+")    "  AT (0,1).
     PRINT "                 Launch Sequence                    "     AT (0,2).
